@@ -25,12 +25,14 @@ class BinaryTree
 
 public:
 
-	BinaryTree(const T* a, size_t size, int index, const T& invalid);
-	~BinaryTree();
+	BinaryTree(const T* a, size_t size, int index, const T& invalid);//构造
+	~BinaryTree();//析构
+	void PrintPre();
 
 private:
 	Node* _MakeTree(const T* a, size_t size, int& index, const T& invalid);
 	void Destroy(Node* _root);
+	void PrintPre(Node* _root);
 private:
 	Node* _root;
 };
@@ -47,13 +49,17 @@ inline BinaryTree<T>::~BinaryTree()
 	Destroy(_root);
 }
 
+template<typename T>
+inline void BinaryTree<T>::PrintPre()
+{
+	PrintPre(_root);
 
-
+}
 
 template<typename T>
 inline BinaryTreeNode<T> * BinaryTree<T>::_MakeTree(const T * a, size_t size, int & index, const T & invalid)
 {
-	Node *root = NULL;
+	Node *root = nullptr;
 	if (index < size && a[index] != invalid)
 	{
 		root = new Node(invalid);
@@ -62,18 +68,30 @@ inline BinaryTreeNode<T> * BinaryTree<T>::_MakeTree(const T * a, size_t size, in
 		root->_right = _MakeTree(a, size, ++index, invalid);
 	}
 	return root;
-	return NULL;
+
 }
 
 template<typename T>
 inline void BinaryTree<T>::Destroy(Node * _root)
 {
 	Node* tmp = _root;
-	if (tmp == NULL)
+	if (tmp == nullptr)
 		return;
 	Destroy(tmp->_left);
 	Destroy(tmp->_right);
 	delete tmp;
-	tmp = NULL;
+	tmp = nullptr;
 
+}
+
+template<typename T>
+inline void BinaryTree<T>::PrintPre(Node * _root)
+{
+	if (_root==nullptr)
+	{
+		return;
+	}
+	cout << _root->_data << endl;
+	PrintPre(_root->_left);
+	PrintPre(_root->_right);
 }
